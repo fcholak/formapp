@@ -1,7 +1,7 @@
 /// <reference types="aws-sdk" />
 import { useState } from "react";
 import { initializeS3Bucket } from "../utils/awsConfig.js";
-import { Input } from "@chakra-ui/react";
+import { Center, Input, Button, Flex } from "@chakra-ui/react";
 
 export default function UploadForm() {
   const bucketName = import.meta.env.VITE_AWS_S3_BUCKET_NAME;
@@ -40,32 +40,18 @@ export default function UploadForm() {
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid",
-        borderColor: "#e4e4e4",
-        margin: "auto",
-        width: "50%",
-        padding: "40px",
-      }}
-    >
-      <Input
-        size="sm"
-        placeholder="Enter file name"
-        onChange={handleOnChange}
-      />
-      <p>{documentTitle}</p>
-      <h4>Upload progress: {progress}%</h4>
-      <input type="file" onChange={handleFile} />
-      <button
-        style={{
-          marginTop: "30px",
-          borderRadius: "5px",
-        }}
-        onClick={() => uploadFile(selectedFile)}
-      >
-        Прикачи
-      </button>
-    </div>
+    <Center m={50}>
+      <Flex direction="column" justify="center">
+        <Input
+          variant="filled"
+          size="md"
+          placeholder="Enter file name"
+          onChange={handleOnChange}
+        />
+        <h4>Upload progress: {progress}%</h4>
+        <Input variant="unstyled" type="file" onChange={handleFile} />
+        <Button onClick={() => uploadFile(selectedFile)}>Upload</Button>
+      </Flex>
+    </Center>
   );
 }
