@@ -1,19 +1,21 @@
 /// <reference types="aws-sdk" />
 import { useState } from "react";
 import { initializeS3Bucket } from "../utils/awsConfig.js";
+import { Input } from "@chakra-ui/react";
 
 export default function UploadForm() {
   const bucketName = import.meta.env.VITE_AWS_S3_BUCKET_NAME;
   const documentBucket = initializeS3Bucket();
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [documentTitle, setDocumentTitle] = useState(null);
 
-  const uploadFile = (file: any) => {
-    const params = {
+  const uploadFile = (file: HTMLInputElement) => {
+    let params = {
       ACL: "public-read",
       Body: file,
       Bucket: bucketName,
-      Key: file.name,
+      Key: file?.name,
     };
 
     documentBucket
@@ -22,14 +24,20 @@ export default function UploadForm() {
         setProgress(Math.round((evt.loaded / evt.total) * 100));
       })
       .send((err) => {
-        if (err) console.log(err);
+        if (!params.Bucket) {
+          console.log("Please select a file!");
+        }
       });
   };
 
-  function handleFile(e: any) {
+  function handleFile(e) {
     const file = e.target.files[0];
     setSelectedFile(file);
   }
+
+  const handleOnChange = (e) => {
+    setDocumentTitle(e.target.value);
+  };
 
   return (
     <div
@@ -41,6 +49,12 @@ export default function UploadForm() {
         padding: "40px",
       }}
     >
+      <Input
+        size="sm"
+        placeholder="Enter file name"
+        onChange={handleOnChange}
+      />
+      <p>{documentTitle}</p>
       <h4>Upload progress: {progress}%</h4>
       <input type="file" onChange={handleFile} />
       <button
@@ -50,7 +64,7 @@ export default function UploadForm() {
         }}
         onClick={() => uploadFile(selectedFile)}
       >
-        Upload PDF
+        Прикачи
       </button>
     </div>
   );

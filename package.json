@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.3.6",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "aws-sdk": "^2.1233.0",
+    "framer-motion": "^6.5.1",
     "install": "^0.13.0",
     "npm": "^8.19.2",
     "react": "^18.2.0",

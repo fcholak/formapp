@@ -7,4 +7,9 @@ export default defineConfig({
     global: {},
   },
   plugins: [react()],
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
 });
